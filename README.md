@@ -15,7 +15,7 @@ If you notice any typos or would like to suggest any changes, please contribute 
 
 <ul>
 <li><b><a href="https://github.com/Automattic/Documattic/blob/master/Security%20FAQ.html">Security FAQ.html</a></b> - commonly asked security questions about WordPress and WordPress.com. This version is in HTML and is also live at <a href="http://vip.wordpress.com/security">vip.wordpress.com/security</a>.</li>
-<li><b>Security FAQ pdf</b> - a PDF of those same questions in an easily downloadable and printable version.</li>
+<li><b><a href="https://github.com/Automattic/Documattic/blob/master/WordPressSecurityFAQ.pdf">WordPress Security FAQ PDF</a></b> - a PDF of those same questions in an easily downloadable and printable version.</li>
 </ul>
 
 <b>License</b>
