@@ -14,7 +14,7 @@ If you notice any typos or would like to suggest any changes, please contribute 
 <b>Documents in this repository</b>
 
 <ul>
-<li><b><a href="https://github.com/Automattic/Documattic/blob/master/Security%20FAQ.html">Security FAQ.html</a></b> - commonly asked security questions about WordPress and WordPress.com. This version is in HTML and is also live at <a href="http://vip.wordpress.com/security">vip.wordpress.com/security</a>.</li>
+<li><b><a href="https://github.com/Automattic/Documattic/blob/master/Security%20FAQ.html">Security FAQ.html</a></b> - commonly asked security questions about WordPress and WordPress.com. This version is in HTML (you can see a <a href="http://htmlpreview.github.io/?https://github.com/Automattic/Documattic/blob/master/Security%20FAQ.html">github preview of the HTML</a> here) and is also live at <a href="http://vip.wordpress.com/security">vip.wordpress.com/security</a>.</li>
 <li><b><a href="https://github.com/Automattic/Documattic/blob/master/WordPressSecurityFAQ.pdf">WordPress Security FAQ PDF</a></b> - a PDF of those same questions in an easily downloadable and printable version.</li>
 </ul>
 
