@@ -20,4 +20,4 @@ If you notice any typos or would like to suggest any changes, please contribute 
 
 <b>License</b>
 
-As noted in our license file, the content here is licensed under the <a href="http://creativecommons.org/licenses/by-sa/3.0/legalcode">Creative Commons Attribution-3.0 Unported license</a>. Please feel free to make alterations via pull-request.
+The content here is licensed under the Creative Commons <a href="https://creativecommons.org/licenses/by-sa/4.0/">Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license</a>. Please feel free to make alterations via pull-request.
