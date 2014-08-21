@@ -2,7 +2,18 @@
 Teacher's Reference and Readme for Superuser Training Materials
 ==============
 
-How to use these materials
+Course Description
+---------------
+In this course, the participant will learn how to manage and use the WordPress interface from a site owner’s point of view; as someone who will be managing multiple users, their permissions, and ultimately sharing knowledge with them about how to use WordPress to publish a great site with an active community and/or audience. We like to think of this course as teaching your teachers – those who will serve as the WordPress experts in an organization.
+
+The course also does a deep dive into the publishing process so superusers can teach their editors, authors, and contributors how to best use the WordPress interface. From creating and publishing posts to managing tags and categories, from mastering multimedia and images in articles, and bulk management of posts and pages, we’ll cover the entire publishing process from draft to done.
+
+Student Prerequisites
+---------------
+Users should have a working (beyond basic) knowledge of the WordPress administration panel / backend. They should be managers, administrators, site owners, or editors of an existing or future WordPress site with multiple users.
+
+
+Instructors: How to use these materials
 --------------
 
 These materials are not meant to be standalone training courses, and for an ideal experience should be presented by an instructor.
