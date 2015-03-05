@@ -13,11 +13,12 @@ If you notice any typos or would like to suggest any changes, please contribute 
 
 <h3>License</h3>
 
-The content here is licensed under the Creative Commons <a href="https://creativecommons.org/licenses/by-sa/4.0/">Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license</a>. Please feel free to make alterations via pull-request.
+The content here is licensed under the Creative Commons <a href="https://creativecommons.org/licenses/by-sa/4.0/">Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license</a> <b>unless otherwise noted on the readme for each particular document</b>. Please feel free to make alterations via pull-request.
 
 <h3>Documents in this repository</h3>
 
 <ul>
+<li><b><a href="https://github.com/Automattic/Documattic/tree/master/WordPress-Security-White-Paper">WordPress Security White Paper</a><i></b>
 <li><b><a href="https://github.com/Automattic/Documattic/tree/master/Presentations">Presentations</a><i></b>
 <ul>
 <li><b>Superuser Training Slides</b> - <i>Slides to help teach superusers (administrators, site owners, and editors) how to manage and publish on a WordPress site</i> <a href="https://github.com/Automattic/Documattic/tree/master/Presentations/Superuser_Training_Slides">subdirectory</a> </li>
