@@ -8,218 +8,83 @@
 
 <h2>Ikhtisar</h2>
 
-<p>Dokumen ini merupakan analisis dan uraian mengenai pengembangan 
-perangkat lunak inti WordPress dan pemrosesan keamanan terkait, juga sebagai 
-bahan pemeriksaan atas keamanan inheren yang terbangun di dalam perangkat lunak. 
-Para penentu kebijakan yang tengah mengevaluasi WordPress sebagai sistem 
-manajemen konten atau framework aplikasi web harus menggunakan dokumen ini 
-dalam analisis dan pengambilan keputusan mereka, sedangkan para pengembang 
-harus merujuk pada dokumen ini untuk lebih memahami komponen-komponen keamanan 
-serta praktik-praktik terbaik dalam penggunaan perangkat lunak.</p>
+<p>Dokumen ini merupakan analisis dan uraian mengenai pengembangan perangkat lunak inti WordPress dan pemrosesan keamanan terkait, juga sebagai bahan pemeriksaan atas keamanan inheren yang terbangun di dalam perangkat lunak. Para penentu kebijakan yang tengah mengevaluasi WordPress sebagai sistem manajemen konten atau framework aplikasi web harus menggunakan dokumen ini dalam analisis dan pengambilan keputusan mereka, sedangkan para pengembang harus merujuk pada dokumen ini untuk lebih memahami komponen-komponen keamanan serta praktik-praktik terbaik dalam penggunaan perangkat lunak.</p>
 
-<p>Informasi dalam dokumen ini sesuai dengan rilis stabil perangkat lunak 
-termutakhir, WordPress 4.1 saat dokumen ini diterbitkan, namun juga relevan 
-bagi versi perangkat lunak termutakhir karena <em>backwards compatibility</em> 
-merupakan fokus utama tim pengembang WordPress. Pengukuran dan perubahan 
-keamanan tertentu akan dicatat saat ditambahkan dalam software inti pada 
-rilis-rilis tertentu. Sangat dianjurkan untuk selalu menjalankan versi stabil 
-termutakhir dari WordPress untuk memastikan fasilitas keamanan terbaik.</p>
+<p>Informasi dalam dokumen ini sesuai dengan rilis stabil perangkat lunak termutakhir, WordPress 4.1 saat dokumen ini diterbitkan, namun juga relevan bagi versi perangkat lunak termutakhir karena kompatibilitas mundur merupakan fokus utama tim pengembang WordPress. Pengukuran dan perubahan keamanan tertentu akan dicatat saat ditambahkan dalam software inti pada rilis-rilis tertentu. Sangat dianjurkan untuk selalu menjalankan versi stabil termutakhir dari WordPress untuk memastikan fasilitas keamanan terbaik.</p>
 
 <h2>Ringkasan Eksekutif</h2>
-<p>WordPress adalah sistem manajemen konten yang dipergunakan untuk mendayai 
-jutaan situs web, aplikasi web, dan blog. Saat ini, WordPress mendayai 23% 
-lebih dari 10 juta situs web teratas di Internet. Kegunaan, ekstensibilitas, 
-dan komunitas pengembangan yang matang menjadikannya pilihan yang populer dan 
-aman bagi situs web besar maupun kecil.</p>
+<p>WordPress adalah sistem manajemen konten yang dipergunakan untuk mendayai jutaan situs web, aplikasi web, dan blog. Saat ini, WordPress mendayai 23% lebih dari 10 juta situs web teratas di Internet. Kegunaan, ekstensibilitas, dan komunitas pengembangan yang matang menjadikannya pilihan yang populer dan aman bagi situs web besar maupun kecil.</p>
 
-<p>Sejak kehadirannya pada tahun 2003, WordPress telah mengalami penguatan 
-kontinu sehingga perangkat lunak intinya dapat mengenali dan menjalankan 
-mitigasi atas ancaman-ancaman keamanan umum, termasuk daftar 10 Besar yang 
-diidentifikasi oleh The Open Web Application Security Project (OWASP) sebagai 
-kerentanan-kerentanan keamanan umum, yang dibahas dalam dokumen ini.</p>
+<p>Sejak kehadirannya pada tahun 2003, WordPress telah mengalami penguatan kontinu sehingga perangkat lunak intinya dapat mengenali dan menjalankan mitigasi atas ancaman-ancaman keamanan umum, termasuk daftar 10 Besar yang diidentifikasi oleh The Open Web Application Security Project (OWASP) sebagai kerentanan-kerentanan keamanan umum, yang dibahas dalam dokumen ini.</p>
 
-<p>Tim Keamanan WordPress, berkolaborasi dengan Tim Kepemimpinan Inti WordPress 
-dan didukung oleh komunitas global WordPress, bekerja untuk mengidentifikasi 
-dan mengatasi permasalahan-permasalahan keamanan dalam perangkat lunak inti 
-yang tersedia untuk distribusi dan instalasi di WordPress.org, serta 
-merekomendasikan dan mendokumentasikan praktik-praktik keamanan terbaik bagi 
-para pengembang plugin dan tema pihak ketiga.</p>
+<p>Tim Keamanan WordPress, berkolaborasi dengan Tim Kepemimpinan Inti WordPress dan didukung oleh komunitas global WordPress, bekerja untuk mengidentifikasi dan mengatasi permasalahan-permasalahan keamanan dalam perangkat lunak inti yang tersedia untuk distribusi dan instalasi di WordPress.org, serta merekomendasikan dan mendokumentasikan praktik-praktik keamanan terbaik bagi para pengembang plugin dan tema pihak ketiga.</p>
 
-<p>Para pengembang dan administrator harus memberikan perhatian khusus mengenai 
-penggunaan <em>core API</em> dan konfigurasi server di bawah permukaan yang 
-kerap menjadi sumber kerentanan-kerentanan umum, termasuk memastikan bahwa 
-semua pengguna mempergunakan password yang kuat untuk mengakses WordPress.</p>
+<p>Para pengembang dan administrator harus memberikan perhatian khusus mengenai penggunaan <em>core API</em> dan konfigurasi server di bawah permukaan yang kerap menjadi sumber kerentanan-kerentanan umum, termasuk memastikan bahwa semua pengguna mempergunakan password yang kuat untuk mengakses WordPress.</p>
 
 
 <h2>Ikhtisar tentang WordPress</h2>
-<p>WordPress adalah sebuah sistem manajemen konten (CMS) sumber terbuka. 
-WordPress merupakan perangkat lunak CMS yang paling banyak dipergunakan di 
-dunia dan mendayai 23% lebih dari 10 juta situs 
-web<sup id="ref1"><a href="#footnote1">1</a></a></sup>, dan diperkirakan 
-menguasai sebesar 60% dari pangsa pasar situs web yang menggunakan CMS.</p>
+<p>WordPress adalah sebuah sistem manajemen konten (CMS) sumber terbuka. WordPress merupakan perangkat lunak CMS yang paling banyak dipergunakan di dunia dan mendayai 23% lebih dari 10 juta situs web<sup id="ref1"><a href="#footnote1">1</a></a></sup>, dan diperkirakan menguasai sebesar 60% dari pangsa pasar situs web yang menggunakan CMS.</p>
 
-<p>WordPress berada di bawah lisensi 
-<em>General Public License (GPLv2 or later)</em> yang menyajikan empat 
-kemerdekaan inti, dan dianggap sebagai <em>"bill of rights"</em> WordPress:</p>
+<p>WordPress berada di bawah lisensi <em>General Public License (GPLv2 or later)</em> yang menyajikan empat kemerdekaan inti, dan dianggap sebagai <em>"bill of rights"</em> WordPress:</p>
 <ol>
 	<li>Kemerdekaan untuk menjalankan program, untuk tujuan apapun.</li>
-	<li>Kemerdekaan untuk mempelajari bagaimana program bekerja, dan 
-	memodifikasinya untuk menjalankan kerja-kerja yang Anda inginkan.</li>
+	<li>Kemerdekaan untuk mempelajari bagaimana program bekerja, dan memodifikasinya untuk menjalankan kerja-kerja yang Anda inginkan.</li>
 	<li>Kemerdekaan untuk mendistribusikan ulang.</li>
-	<li>Kemerdekaan untuk mendistribusikan salinan versi-versi 
-	termodifikasi Anda kepada orang lain.</li>
+	<li>Kemerdekaan untuk mendistribusikan salinan versi-versi termodifikasi Anda kepada orang lain.</li>
 </ol>
 <h3>Tim Kepemimpinan WordPress Core</h3>
-<p>Proyek WordPress berbentuk meritokrasi, dijalankan oleh sebuah tim 
-kepemimpinan inti, dan dipimpin oleh <em>co-creator</em> dan 
-<em>lead developer</em>-nya, Matt Mullenweg. Tim tersebut mengelola segala 
-aspek proyek, meliputi pengembangan inti, WordPress.org, dan inisiatif-
-inisiatif komunitas.</p>
+<p>Proyek WordPress berbentuk meritokrasi, dijalankan oleh sebuah tim kepemimpinan inti, dan dipimpin oleh <em>co-creator</em> dan <em>lead developer</em>-nya, Matt Mullenweg. Tim tersebut mengelola segala aspek proyek, meliputi pengembangan inti, WordPress.org, dan inisiatif-inisiatif komunitas.</p>
 
-<p>Tim Kepemimpinan Inti terdiri dari Matt Mullenweg, lima 
-<em>lead developers</em>, dan lebih dari selusin <em>core developers</em> 
-dengan akses <em>commit</em> permanen. Para pengembang tersebut memiliki 
-otoritas final atas keputusan-keputusan teknis, dan memimpin diskusi-diskusi 
-arsitektur dan upaya-upaya implementasi.</p>
+<p>Tim Kepemimpinan Inti terdiri dari Matt Mullenweg, lima orang <em>lead developers</em>, dan lebih dari selusin <em>core developers</em> dengan akses <em>commit</em> permanen. Para pengembang tersebut memiliki otoritas final atas keputusan-keputusan teknis, dan memimpin diskusi-diskusi arsitektur dan upaya-upaya implementasi.</p>
 
-<p>WordPress memiliki sejumlah <em>contributing developers</em>. Beberapa di 
-antara mereka adalah <em>committers</em> saat ini maupun terdahulu. 
-<em>Contributing developers</em> tersebut adalah para kontributor WordPress 
-veteran dan terpercaya yang terhormat di kalangan sesama pengembang. Apabila 
-dibutuhkan, WordPress juga memiliki <em>guest committers</em>, individu-
-individu yang memiliki akses <em>commit</em>, kadang untuk komponen tertentu, 
-atau dalam basis temporer atau ujicoba.</p>
+<p>WordPress memiliki sejumlah <em>contributing developers</em>. Beberapa di antara mereka adalah <em>committers</em> saat ini maupun terdahulu. <em>Contributing developers</em> tersebut adalah para kontributor WordPress veteran dan terpercaya yang terhormat di kalangan sesama pengembang. Apabila dibutuhkan, WordPress juga memiliki <em>guest committers</em>, individu-individu yang memiliki akses <em>commit</em>, kadang untuk komponen tertentu, atau dalam basis temporer atau ujicoba.</p>
 
-<p><em>Core developers</em> dan <em>contributing developers</em> utamanya 
-memimpin pengembangan WordPress. Setiap versinya, ratusan pengembang 
-mengontribusikan kode untuk WordPress. Para kontributor inti tersebut adalah 
-relawan yang berkontribusi pada basis kode inti dengan cara-cara tertentu.</p>
+<p><em>Core developers</em> dan <em>contributing developers</em> utamanya memimpin pengembangan WordPress. Setiap versinya, ratusan pengembang mengontribusikan kode untuk WordPress. Para kontributor inti tersebut adalah relawan yang berkontribusi pada basis kode inti dengan cara-cara tertentu.</p>
 
 <h3>Siklus Rilis WordPress</h3>
-<p>Tiap-tiap siklus rilis WordPress dipimpin oleh satu atau beberapa pengembang 
-inti WordPress. Tiap siklus rilis biasanya berjalan sekitar 4 bulan mulai dari 
-pertemuan awal hingga peluncuran versi tersebut.</p>
+<p>Tiap-tiap siklus rilis WordPress dipimpin oleh satu atau beberapa pengembang inti WordPress. Tiap siklus rilis biasanya berjalan sekitar 4 bulan mulai dari pertemuan penentuan wilayah kerja awal hingga peluncuran versi tersebut.</p>
 
-<p>Setiap siklus rilis mengikuti pola 
-berikut<sup id="ref2"><a href="#footnote2">2</a></sup>:</p>
+<p>Setiap siklus rilis mengikuti pola berikut<sup id="ref2"><a href="#footnote2">2</a></sup>:</p>
 <ul>
-	<li>Fase 1: Perencanaan dan penentuan kepemimpinan tim. 
-	Fase ini dijalankan di dalam ruang chat #core di Slack. Pemimpin rilis 
-	mendiskusikan fitur-fitur untuk rilis WordPress berikutnya. Para 
-	kontributor terlibat dalam diskusi tersebut. Pemimpin rilis akan 
-	mengidentifikasikan kepemimpinan tim untuk masing-masing fitur.</li>
-	<li>Fase 2: Kerja pengembangan dimulai. 
-	Para pemimpin tim membangun tim dan mengerjakan fitur yang ditugaskan 
-	pada mereka. Chat=chat rutin dijadwalkan untuk memastikan kerja 
-	pengembangan terus berjalan.</li>
-	<li>Fase 3: Beta. 
-	Versi-versi beta dirilis, dan <em>beta-testers</em> diminta untuk mulai 
-	melaporkan bug. Di fase ini, tak ada lagi <em>commits</em> berdasarkan 
-	permintaan perkembangan fitur. Para pengembang plugin dan tema pihak 
-	ketiga dihimbau untuk menguji kode mereka dengan perubahan-perubahan 
-	yang akan datang.</li>
-	<li>Fase 4: <em>Release Candidate</em>. 
-	<em>Strings</em> yang bisa diterjemahkan akan dibekukan pada fase ini. 
-	Kerja pengembangan ditargetkan pada <em>regressions</em> dan 
-	<em>blockers</em> saja.</li>
-	<li>Fase 5: Peluncuran. Versi WordPress diluncurkan dan disediakan pada 
-	Admin WordPress untuk pemutakhiran.</li>
+	<li>Fase 1: Perencanaan dan penentuan kepemimpinan tim. Fase ini dijalankan di dalam ruang chat #core di Slack. Pemimpin rilis mendiskusikan fitur-fitur untuk rilis WordPress berikutnya. Para kontributor terlibat dalam diskusi tersebut. Pemimpin rilis akan mengidentifikasikan kepemimpinan tim untuk masing-masing fitur.</li>
+	<li>Fase 2: Kerja pengembangan dimulai. Para pemimpin tim membangun tim dan mengerjakan fitur yang ditugaskan pada mereka. Chat=chat rutin dijadwalkan untuk memastikan kerja pengembangan terus berjalan.</li>
+	<li>Fase 3: Beta. Versi-versi beta dirilis, dan <em>beta-testers</em> diminta untuk mulai melaporkan bug. Di fase ini, tak ada lagi <em>commits</em> berdasarkan permintaan perkembangan fitur. Para pengembang plugin dan tema pihak ketiga dihimbau untuk menguji kode mereka dengan perubahan-perubahan yang akan datang.</li>
+	<li>Fase 4: <em>Release Candidate</em>. <em>Strings</em> yang bisa diterjemahkan akan dibekukan pada fase ini. Kerja pengembangan ditargetkan pada <em>regressions</em> dan <em>blockers</em> saja.</li>
+	<li>Fase 5: Peluncuran. Versi WordPress diluncurkan dan disediakan pada Admin WordPress untuk pemutakhiran.</li>
 </ul>
 <h3>Penomoran Versi dan Rilis Keamanan</h3>
-<p>Versi mayor WordPress ditandai dengan dua sekuens pertama. Sebagai contoh, 
-3.5 adalah sebuah rilis mayor, demikian juga 3.6, 3.7, atau 4.0. Tak ada yang 
-disebut sebagai "WordPress 3" atau "WordPress 4" dan tiap-tiap rilis mayor 
-dirujuk dengan penomorannya, misalnya, "WordPress 3.9."</p>
+<p>Versi mayor WordPress ditandai dengan dua sekuens pertama. Sebagai contoh, 3.5 adalah sebuah rilis mayor, demikian juga 3.6, 3.7, atau 4.0. Tak ada yang disebut sebagai "WordPress 3" atau "WordPress 4" dan tiap-tiap rilis mayor dirujuk dengan penomorannya, misalnya, "WordPress 3.9."</p>
 
-<p>Rilis-rilis mayor bisa memperoleh penambahan fitur-fitur pengguna maupun 
-<em>developer API</em>. Meskipun pada umumnya di dunia perangkat lunak, sebuah 
-versi "mayor" berarti terputusnya <em>backwards compatibility</em>, WordPress 
-berupaya keras untuk tak pernah memutuskannya. <em>Backwards compatibility</em> 
-adalah salah satu filosofi terpenting dalam proyek ini, dimaksudkan untuk 
-membuat proses pemutakhiran jauh lebih mudah baik bagi pengguna maupun 
-pengembang.</p>
+<p>Rilis-rilis mayor bisa memperoleh penambahan fitur-fitur pengguna maupun <em>developer API</em>. Meskipun pada umumnya di dunia perangkat lunak, sebuah versi "mayor" berarti terputusnya kompatibilitas mundur, WordPress berupaya keras untuk tak pernah memutuskannya. Kompatibilitas mundur adalah salah satu filosofi terpenting dalam proyek ini, dimaksudkan untuk membuat proses pemutakhiran jauh lebih mudah baik bagi pengguna maupun pengembang.</p>
 
-<p>Versi minor WordPress ditandai dengan sekuens ketiga. Versi 3.5.1 adalah 
-sebuah versi minor, demikian pula 
-3.4.2<sup id="ref3"><a href="#footnote3">3</a></sup>. Rilis minor dimaksudkan 
-untuk perbaikan kerentanan-kerentanan keamanan dan penanganan bug-bug kritis 
-saja. Oleh karena versi-versi baru WordPress cukup sering dirilis &mdash; 
-targetnya ialah tiap 4-5 bulan untuk rilis mayor, dan rilis minor diluncurkan 
-sesuai kebutuhan &mdash; maka hanya ada rilis mayor dan minor saja.</p>
+<p>Versi minor WordPress ditandai dengan sekuens ketiga. Versi 3.5.1 adalah sebuah versi minor, demikian pula 3.4.2<sup id="ref3"><a href="#footnote3">3</a></sup>. Rilis minor dimaksudkan untuk perbaikan kerentanan-kerentanan keamanan dan penanganan bug-bug kritis saja. Oleh karena versi-versi baru WordPress cukup sering dirilis &mdash; targetnya ialah tiap 4-5 bulan untuk rilis mayor, dan rilis minor diluncurkan sesuai kebutuhan &mdash; maka hanya ada rilis mayor dan minor saja.</p>
 
-<h3><em>Backwards Compatibility</em> tiap Versi</h3>
-<p>Proyek WordPress memiliki komitmen kuat terhadap 
-<em>backwards compatibility</em>. Komitmen ini berarti bahwa seluruh tema, 
-plugin, dan kode kustom tetap berfungsi tiap kali perangkat lunak inti 
-WordPress dimutakhirkan, dan mendorong para pemilik situs untuk menjalankan 
-versi WordPress termutakhir yang aman pada situs mereka.</p>
+<h3>Kompatibilitas Mundur tiap Versi</h3>
+<p>Proyek WordPress memiliki komitmen kuat terhadap kompatibilitas mundur. Komitmen ini berarti bahwa seluruh tema, plugin, dan kode kustom tetap berfungsi tiap kali perangkat lunak inti WordPress dimutakhirkan, dan mendorong para pemilik situs untuk menjalankan versi WordPress termutakhir yang aman pada situs mereka.</p>
 
 <h2>WordPress dan Keamanan</h2>
 <h3>Tim Keamanan WordPress</h3>
-<p>Tim Keamanan WordPress tersusun dari sekitar 25 orang ahli termasuk 
-<em>lead developers</em> dan periset keamanan &mdash; sekitar separuhnya adalah 
-pekerja di Automattic (pembuat WordPress.com, platform hosting WordPress 
-pertama dan terbesar), dan sebagian lainnya bekerja dalam bidang keamanan web. 
-Tim ini berkonsultasi dengan para periset keamanan dan perusahaan-perusahaan 
-hosting terkenal dan terpercaya<sup><a href="#footnote3">3</a></sup>.</p>
+<p>Tim Keamanan WordPress tersusun dari sekitar 25 orang ahli termasuk <em>lead developers</em> dan periset keamanan &mdash; sekitar separuhnya adalah pekerja di Automattic (pembuat WordPress.com, platform hosting WordPress pertama dan terbesar), dan sebagian lainnya bekerja dalam bidang keamanan web. Tim ini berkonsultasi dengan para periset keamanan dan perusahaan-perusahaan hosting terkenal dan terpercaya<sup><a href="#footnote3">3</a></sup>.</p>
 
-<p>Tim Keamanan WordPress sering berkolaborasi dengan tim-tim keamanan lain 
-guna menangani berbagai permasalahan dalam dependensi-dependensi umum, misalnya 
-mengatasi kerentanan dalam PHP XML parser, yang digunakan oleh XML-RPC API yang 
-terdapat dalam paket WordPress, pada 
-WordPress 3.9.2<sup id="ref4"><a href="#footnote4">4</a></sup>. Resolusi 
-kerentanan ini merupakan hasil dari kerjasama antara tim keamanan WordPress dan 
-Drupal.</p>
+<p>Tim Keamanan WordPress sering berkolaborasi dengan tim-tim keamanan lain guna menangani berbagai permasalahan dalam dependensi-dependensi umum, misalnya mengatasi kerentanan dalam PHP XML parser, yang digunakan oleh XML-RPC API yang terdapat dalam paket WordPress, pada WordPress 3.9.2<sup id="ref4"><a href="#footnote4">4</a></sup>. Resolusi kerentanan ini merupakan hasil dari kerjasama antara tim keamanan WordPress dan Drupal.</p>
 
 <h3>Resiko, Proses, dan Riwayat Keamanan WordPress</h3>
-<p>Tim Keamanan WordPress mempercayakan <em>Responsible Disclosure</em> dengan 
-memperingatkan tim keamanan sesegera mungkin akan adanya kerentanan-kerentanan 
-potensial. Kerentanan-kerentanan keamanan potensial bisa dilaporkan pada Tim 
-Keamanan secara langsung melalui email ke alamat: 
-security@wordpress.org<sup id="ref5"><a href="#footnote5">5</a></sup>. 
-Tim Keamanan berkomunikasi secara internal melalui sebuah milis privat, dan 
-bekerja pada sebuah Trac privat yang terproteksi untuk penyelidikan, pengujian, 
-dan perbaikan bug dan permasalahan keamanan.</p>
+<p>Tim Keamanan WordPress mempercayakan <em>Responsible Disclosure</em> dengan memperingatkan tim keamanan sesegera mungkin akan adanya kerentanan-kerentanan potensial. Kerentanan-kerentanan keamanan potensial bisa dilaporkan pada Tim Keamanan secara langsung melalui email ke alamat: security@wordpress.org<sup id="ref5"><a href="#footnote5">5</a></sup>. Tim Keamanan berkomunikasi secara internal melalui sebuah milis privat, dan bekerja pada sebuah Trac privat yang terproteksi untuk penyelidikan, pengujian, dan perbaikan bug dan permasalahan keamanan.</p>
 
-<p>Setiap laporan keamanan ditangani segera setelah diterima, dan tim bekerja 
-untuk melakukan verifikasi kerentanan dan menentukan tingkat severitasnya. 
-Jika terkonfirmasi, tim keamanan akan merencanakan sebuah <em>patch</em> untuk 
-mengatasi permasalahan tersebut yang akan diterapkan sebagai <em>commit</em> pada 
-rilis perangkat lunak WordPress yang akan datang, atau diterapkan sebagai rilis 
-keamanan darurat, tergantung tingkat severitas permasalahan.</p>
+<p>Setiap laporan keamanan ditangani segera setelah diterima, dan tim bekerja untuk melakukan verifikasi kerentanan dan menentukan tingkat resikonya. Jika terkonfirmasi, tim keamanan akan merencanakan sebuah <em>patch</em> untuk mengatasi permasalahan tersebut yang akan diterapkan sebagai <em>commit</em> pada rilis perangkat lunak WordPress yang akan datang, atau diterapkan sebagai rilis keamanan darurat, tergantung tingkat resiko permasalahan.</p>
 
-<p>Untuk rilis keamanan darurat, sebuah himbauan akan diterbitkan oleh 
-Tim Keamanan melalui situs WordPress 
-News<sup id="ref6"><a href="#footnote6">6</a></sup> sebagai pengumuman rilis 
-yang memuat perincian perubahan. Kredit atas <em>responsible disclosure</em> 
-akan dimuat dalam himbauan tersebut untuk mendorong dan memperkuat 
-<em>responsible reporting</em> yang kontinu kedepannya.</p>
+<p>Untuk rilis keamanan darurat, sebuah himbauan akan diterbitkan oleh Tim Keamanan melalui situs WordPress News<sup id="ref6"><a href="#footnote6">6</a></sup> sebagai pengumuman rilis yang memuat perincian perubahan. Kredit atas <em>responsible disclosure</em> akan dimuat dalam himbauan tersebut untuk mendorong dan memperkuat <em>responsible reporting</em> yang kontinu kedepannya.</p>
 
-<p>Para administrator perangkat lunak WordPress akan melihat notifikasi pada 
-dasbor situs mereka untuk menjalankan pemutakhiran apabila rilis baru tersedia, 
-dan setelah pemutakhiran manual dijalankan, pengguna akan dialihkan ke laman 
-Tentang WordPress yang menyajikan rincian perubahan. Jika administrator 
-mengaktifkan fitur pemutakhiran otomatis di balik layar, mereka akan menerima 
-email sesudah pemutakhiran dijalankan.</p>
+<p>Para administrator perangkat lunak WordPress akan melihat notifikasi pada dasbor situs mereka untuk menjalankan pemutakhiran apabila rilis baru tersedia, dan setelah pemutakhiran manual dijalankan, pengguna akan dialihkan ke laman Tentang WordPress yang menyajikan rincian perubahan. Jika administrator mengaktifkan fitur pemutakhiran otomatis di balik layar, mereka akan menerima email sesudah pemutakhiran dijalankan.</p>
 <h3>Pemutakhiran di Balik Layar Otomatis untuk Rilis Keamanan</h3>
-<p>Mulai versi 3.7, WordPress memperkenalkan pemutakhiran otomatis di balik 
-layar untuk semua rilis minor<sup id="ref7"><a href="#footnote7">7</a></sup>, 
-seperti 3.7.1 dan 3.7.2. Tim Keamanan WordPress bisa mengidentifikasi, 
-memperbaiki, dan mengajukan peningkatan keamanan otomatis untuk WordPress tanpa 
-mengharuskan pemilik situs untuk melakukan tindakan apapun di pihak mereka, dan 
-pemutakhiran keamanan akan terinstal secara otomatis.</p>
+<p>Mulai versi 3.7, WordPress memperkenalkan pemutakhiran otomatis di balik layar untuk semua rilis minor<sup id="ref7"><a href="#footnote7">7</a></sup>, seperti 3.7.1 dan 3.7.2. Tim Keamanan WordPress bisa mengidentifikasi, memperbaiki, dan mengajukan peningkatan keamanan otomatis untuk WordPress tanpa mengharuskan pemilik situs untuk melakukan tindakan apapun di pihak mereka, dan pemutakhiran keamanan akan terinstal secara otomatis.</p>
 
-<p>Ketika pemutakhiran keamanan diajukan bagi rilis stabil terkini WordPress, 
-tim inti akan juga mengajukan pemutakhiran keamanan untuk semua rilis yang 
-mampu menjalankan pemutakhiran di balik layar (mulai WordPress 3.7), sehingga 
-versi WordPress terdahulu namun cukup mutakhir tersebut akan mengalami 
-peningkatan keamanan.</p>
+<p>Ketika pemutakhiran keamanan diajukan bagi rilis stabil terkini WordPress, tim inti akan juga mengajukan pemutakhiran keamanan untuk semua rilis yang mampu menjalankan pemutakhiran di balik layar (mulai WordPress 3.7), sehingga versi WordPress terdahulu namun cukup mutakhir tersebut akan mengalami peningkatan keamanan.</p>
 
-<p>Masing-masing pemilik situs bisa memilih untuk menonaktifkan pemutakhiran 
-otomatis di balik layar melalui sebuah perubahan sederhana dalam file 
-konfigurasi mereka, meskipun pengaktifan fungsionalitas tersebut sangat 
-direkomendasikan oleh tim inti, demikian juga dalam hal menjalankan rilis 
-WordPress stabil termutakhir.</p>
+<p>Masing-masing pemilik situs bisa memilih untuk menonaktifkan pemutakhiran otomatis di balik layar melalui sebuah perubahan sederhana dalam file konfigurasi mereka, meskipun pengaktifan fungsionalitas tersebut sangat direkomendasikan oleh tim inti, demikian juga dalam hal menjalankan rilis WordPress stabil termutakhir.</p>
+
+<!-- Start of UNTRANSLATED YET -->
+
 <h3>2013 OWASP Top 10</h3>
 <p>The Open Web Application Security Project (OWASP) is an online community dedicated to web application security. The OWASP Top 10 list<sup id="ref8"><a href="#footnote8">8</a></sup> focuses on identifying the most serious application security risks for a broad array of organizations. The Top 10 items are selected and prioritized in combination with consensus estimates of exploitability, detectability, and impact estimates.</p>
 
@@ -253,59 +118,62 @@ WordPress stabil termutakhir.</p>
 <p>When processing XML, WordPress disables the loading of custom XML entities to prevent both External Entity and Entity Expansion attacks. Beyond PHP's core functionality, WordPress does not provide additional secure XML processing API for plugin authors.</p>
 <h4>SSRF (Server Side Request Forgery) Attacks</h4>
 <p>HTTP requests issued by WordPress are filtered to prevent access to loopback and private IP addresses. Additionally, access is only allowed to certain standard HTTP ports.</p>
+
+<!-- End of UNTRANSLATED YET -->
+
 <h2>Keamanan Plugin dan Tema WordPress</h2>
 <h3>Tema Bawaan</h3>
-<p>WordPress requires a theme to be enabled to render content visible on the frontend. The default theme which ships with core WordPress (currently "Twenty Fifteen") has been vigorously reviewed and tested for security reasons by both the team of theme developers plus the core development team.</p>
+<p>WordPress membutuhkan sebuah tema yang diaktifkan guna menampilkan konten di <em>frontend</em>. Tema bawaan yang disertakan dengan inti WordPress (saat ini "Twenty Fifteen") telah diperiksa dan diuji secara ketat demi alasan keamanan baik oleh tim pengembangan tema maupun tim pengembangan inti.</p>
 
-<p>The default theme can serve as a starting point for custom theme development, and site developers can create a child theme which includes some customization but falls back on the default theme for most functionality and security. The default theme can be easily removed by an administrator if not needed.</p>
+<p>Tema bawaan bisa dijadikan titik awal bagi pengembangan tema kustom, dan para pengembang situs bisa membuat tema anak yang memuat sejumlah kustomisasi namun kembali ke tema bawaan dalam kebanyakan fungsionalitas dan keamanan. Tema bawaan dapat dengan mudah dihapus oleh administrator jika tidak diperlukan.</p>
 
 <h3>Repositori Tema dan Plugin WordPress.org</h3>
 
-<p>There are approximately 30,000+ plugins and 2,000+ themes listed on the WordPress.org site. These themes and plugins are submitted for inclusion and are manually reviewed by volunteers before making them available on the repository.</p>
+<p>Diperkirakan terdapat lebih dari 30.000 plugin dan 2.000 tema yang terdaftar di situs WordPress.org. Tema-tema dan plugin-plugin tersebut diajukan dalam daftar penerimaan dan diperiksa secara manual oleh para relawan sebelum disediakan di repositori.</p>
 
-<p>Inclusion of plugins and themes in the repository is not a guarantee that they are free from security vulnerabilities. Guidelines are provided for plugin authors to consult prior to submission for inclusion in the repository<sup id="ref17"><a href="#footnote17">17</a></sup>, and extensive documentation about how to do WordPress theme development<sup id="ref18"><a href="#footnote18">18</a></sup> is provided on the WordPress.org site.</p>
+<p>Penerimaan plugin dan tema dalam repositori bukanlah jaminan bahwa mereka bebas dari kerentanan-kerentanan keamanan. Panduan telah disediakan bagi para pengembang plugin sebagai bahan pertimbangan sebelum pengajuan ke repositori<sup id="ref17"><a href="#footnote17">17</a></sup>, dan dokumentasi ekstensif mengenai pengembangan tema WordPress<sup id="ref18"><a href="#footnote18">18</a></sup> disediakan di situs WordPress.org.</p>
 
-<p>Each plugin and theme has the ability to be continually developed by the plugin or theme owner, and any subsequent fixes or feature development can be uploaded to the repository and made available to users with that plugin or theme installed with a description of that change. Site administrators are notified of plugins which need to be updated via their administration dashboard.</p>
+<p>Masing-masing plugin dan tema memiliki kemampuan untuk dikembangkan secara kontinu oleh para pemilik plugin atau tema, dan perbaikan atau pengembangan fitur selanjutnya bisa diunggah ke repositori dan tersedia bagi pengguna yang menginstal plugin atau tema tersebut dengan sebuah deskripsi perubahan. Para administrator situs memperoleh notifikasi plugin mana saja yang perlu dimutakhirkan via dasbor administrasi mereka.</p>
 
-<p>When a plugin vulnerability is discovered by the WordPress Security Team, they contact the plugin author and work together to fix and release a secure version of the plugin. If there is a lack of response from the plugin author or if the vulnerability is severe, the plugin/theme is pulled from the public directory, and in some cases, fixed and updated directly by the Security Team.</p>
-<h3>Tim Pengulas Tema</h3>
-<p>The Theme Review Team is a group of volunteers, led by key and established members of the WordPress community, who review and approve themes submitted to be included in the official WordPress Theme directory. The Theme Review Team maintains the official Theme Review Guidelines<sup id="ref19"><a href="#footnote19">19</a></sup>, the Theme Unit Test Data<sup id="ref20"><a href="#footnote20">20</a></sup>, and the Theme Check Plugin<sup id="ref21"><a href="#footnote21">21</a></sup>, and attempts to engage and educate the WordPress Theme developer community regarding development best practices. Inclusion in the group is moderated by core committers of the WordPress development team.</p>
+<p>Apabila kerentanan sebuah plugin ditemukan oleh Tim Keamanan WordPress, mereka menghubungi pengembang plugin dan bekerjasama untuk memperbaikinya dan merilis sebuah versi aman dari plugin tersebut. Jika tidak ada respon dari pengembang plugin atau jika kerentanan tersebut memiliki resiko tinggi, plugin/tema tersebut akan ditarik dari direktori publik, dan pada kasus tertentu, diperbaiki dan dimutakhirkan secara langsung oleh Tim Keamanan.</p>
+<h3>Tim Pemeriksa Tema</h3>
+<p>Tim Pemeriksa Tema adalah sekelompok relawan, dipimpin oleh anggota-anggota kunci dan mapan dari komunitas WordPress, yang memeriksa dan menyetujui tema-tema yang diajukan untuk dimuat dalam direktori resmi Tema WordPress. Tim Pemeriksa Tema mengelola paket resmi <em>Theme Review Guidelines</em><sup id="ref19"><a href="#footnote19">19</a></sup>, <em>Theme Unit Test Data</em><sup id="ref20"><a href="#footnote20">20</a></sup>, dan <em>Theme Check Plugin</em><sup id="ref21"><a href="#footnote21">21</a></sup>, dan berupaya untuk menjalin hubungan dengan dan mendidik komunitas pengembang Tema WordPress terkait praktik-praktik pengembangan terbaik. Penyertaan di dalam kelompok dimoderasikan oleh <em>core committers</em> dari tim pengembangan WordPress.</p>
 <h2>Peranan Penyedia Layanan Hosting dalam Keamanan WordPress</h2>
-<p>WordPress can be installed on a multitude of platforms. Though WordPress core software provides many provisions for operating a secure web application, which were covered in this document, the configuration of the operating system and the underlying web server hosting the software is equally important to keep the WordPress applications secure.</p>
+<p>WordPress bisa diinstal pada berbagai platform. Meskipun perangkat lunak inti WordPress menyajikan sejumlah provisi untuk mengoperasikan sebuah aplikasi web yang aman, yang dibahas dalam dokumen ini, namun konfigurasi sistem operasi dan server web yang menyajikan perangkat lunak ini di bawah permukaan sama pentingnya untuk menjaga aplikasi WordPress tetap aman.</p>
 <h3>Catatan tentang WordPress.com dan Keamanan WordPress</h3>
-<p>WordPress.com is the largest WordPress installation in the world, and is owned and managed by Automattic, Inc., which was founded by Matt Mullenweg, the WordPress project co-creator. WordPress.com runs on the core WordPress software, and has its own security processes, risks, and solutions<sup id="ref22"><a href="#footnote22">22</a></sup>. This document refers to security regarding the self-hosted, downloadable open source WordPress software available from WordPress.org and installable on any server in the world.</p>
+<p>WordPress.com adalah instalasi WordPress terbesar di dunia, dan dimiliki serta dikelola oleh Automattic, Inc., yang didirikan oleh Matt Mullenweg, <em>co-creator</em> proyek WordPress. WordPress.com berjalan pada perangkat lunak inti WordPress, dan memiliki proses-proses, resiko, dan solusinya tersendiri<sup id="ref22"><a href="#footnote22">22</a></sup>. Dokumen ini merujuk pada keamanan terkait, perangkat lunak WordPress sumber terbuka yang tersedia di WordPress.org dan dapat diinstal pada server (<em>self-hosted</em>) manapun di seluruh dunia.</p>
 <h2>Apendiks</h2>
-<h3>Core WordPress APIs</h3>
-<p>The WordPress Core Application Programming Interface (API) is comprised of several individual APIs<sup id="ref23"><a href="#footnote23">23</a></sup>, each one covering the functions involved in, and use of, a given set of functionality. Together, these form the project interface which allows plugins and themes to interact with, alter, and extend WordPress core functionality safely and securely.</p>
+<h3>Core WordPress API</h3>
+<p>WordPress Core <em>Application Programming Interface</em> (API) tersusun dari sejumlah API berbeda<sup id="ref23"><a href="#footnote23">23</a></sup>, masing-masing memuat fungsi-fungsi yang terlibat dalam, dan penggunaan dari, serangkaian fungsionalitas tertentu. Bersama-sama, API ini membentuk antarmuka proyek yang memampukan plugin dan tema untuk berinteraksi dengan, mengubah, dan memperluas fungsionalitas inti WordPress secara aman.</p>
 
-<p>While each WordPress API provides best practices and standardized ways to interact with and extend WordPress core software, the following WordPress APIs are the most pertinent to enforcing and hardening WordPress security:</p>
+<p>Meskipun masing-masing API WordPress menyajikan praktik-praktik terbaik dan metode terstandarisasi untuk berinteraksi dengan dan memperluas perangkat lunak inti WordPress, API berikut ini adalah yang paling penting dalam memperkuat keamanan WordPress:</p>
 
 <h3>Database API</h3>
 
-<p>The Database API<sup id="ref24"><a href="#footnote24">24</a></sup>, added in WordPress 0.71, provides the correct method for accessing data as named values which are stored in the database layer.</p>
+<p>Database API<sup id="ref24"><a href="#footnote24">24</a></sup>, ditambahkan di WordPress 0.71, menyajikan metode yang benar untuk mengakses data sebagai <em>named values</em> yang tersimpan dalam <em>database layer</em>.</p>
 
 <h3>Filesystem API</h3>
 
-<p>The Filesystem API<sup id="ref25"><a href="#footnote25">25</a></sup>, added in WordPress 2.6<sup id="ref26"><a href="#footnote26">26</a></sup>, was originally created for WordPress' own automatic updates feature. The Filesystem API abstracts out the functionality needed for reading and writing local files to the filesystem to be done securely, on a variety of host types.</p>
+<p>Filesystem API<sup id="ref25"><a href="#footnote25">25</a></sup>, ditambahkan di WordPress 2.6<sup id="ref26"><a href="#footnote26">26</a></sup>, awalnya dibuat untuk fitur pemutakhiran otomatis WordPress sendiri. Filesystem API mengabstraksikan fungsionalitas yang diperlukan untuk membaca dan menuliskan file-file lokal ke filesystem untuk dijalankan secara aman, pada berbagai tipe host.</p>
 
-<p>It does this through the <code>WP_Filesystem_Base</code> class, and several subclasses which implement different ways of connecting to the local filesystem, depending on individual host support. Any theme or plugin that needs to write files locally should do so using the WP_Filesystem family of classes.</p>
+<p>API ini melakukannya melalui <code>WP_Filesystem_Base</code> <em>class</em>, dan sejumlah <em>subclass</em> yang mengimplementasikan metode-metode berbeda untuk mengoneksikan ke filesystem lokal, tergantung pada dukungan host masing-masing. Tema atau plugin apapun yang perlu menuliskan file secara lokal harus dilakukan dengan menggunakan keluarga <em>WP_Filesystem class</em>.</p>
 
 <h3>HTTP API</h3>
 
-<p>The HTTP API<sup id="ref27"><a href="#footnote27">27</a></sup>, added in WordPress 2.7<sup id="ref28"><a href="#footnote28">28</a></sup> and extended further in WordPress 2.8, standardizes the HTTP requests for WordPress. The API handles cookies, gzip encoding and decoding, chunk decoding (if HTTP 1.1), and various other HTTP protocol implementations. The API standardizes requests, tests each method prior to sending, and, based on your server configuration, uses the appropriate method to make the request.</p>
+<p>HTTP API<sup id="ref27"><a href="#footnote27">27</a></sup>, ditambahkan di WordPress 2.7<sup id="ref28"><a href="#footnote28">28</a></sup> dan diperluas di WordPress 2.8, menstandarisasi HTTP requests untuk WordPress. API ini menangani <em>cookies, gzip encoding and decoding, chunk decoding (if HTTP 1.1)</em>, dan berbagai implementasi protokol HTTP lainnya. API ini menstandarisasi <em>requests</em>, menguji masing-masing metode sebelum mengirimkan, dan, tergantung konfigurasi server Anda, menggunakan metode yang sesuai untuk membuat <em>request</em>.</p>
 
 <h3>Permissions and current user API</h3>
 
-<p>The permissions and current user API<sup id="ref29"><a href="#footnote29">29</a></sup> is a set of functions which will help verify the current user's permissions and authority to perform any task or operation being requested, and can protect further against unauthorized users accessing or performing functions beyond their permitted capabilities.</p>
-<h3>White paper content License</h3>
-<p>The text in this document (not including the WordPress logo or <a href="http://wordpressfoundation.org/trademark-policy/">trademark</a>) is licensed under <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal (CC0 1.0) Public Domain Dedication</a>. You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission.</p>
+<p>Permissions and current user API<sup id="ref29"><a href="#footnote29">29</a></sup> adalah serangkaian fungsi-fungsi yang akan membantu memverifikasikan perizinan dan otoritas pengguna saat ini dalam menjalankan kerja maupun operasi yang diminta, dan bisa mencegah pengguna tanpa otoritas mengakses atau menjalankan fungsi-fungsi yang melampaui kapabilitas yang diizinkan.</p>
+<h3>Lisensi konten buku putih</h3>
+<p>Teks dalam dokumen ini (tidak termasuk logo atau <a href="http://wordpressfoundation.org/trademark-policy/">merk dagang</a> WordPress) berada di bawah lisensi <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal (CC0 1.0) Public Domain Dedication</a>. Anda diizinkan untuk menyalin, memodifikasi, mendistribusikan dan menjalankan kinerjanya, bahkan untuk kepentingan komersial, seluruhnya tanpa harus meminta izin.</p>
 
-<p><em>A special thank you to Drupal's </em><a href="http://drupalsecurityreport.org/"><em>security white paper</em></a><em>, which provided some inspiration. </em></p>
-<h3>Additional Reading</h3>
+<p><em>Terimakasih khusus bagi </em><a href="http://drupalsecurityreport.org/"><em>Drupal security white paper</em></a><em>, yang telah memberikan inspirasi. </em></p>
+<h3>Wacana Tambahan</h3>
 <ul>
 	<li>WordPress News <a href="https://wordpress.org/news/">https://wordpress.org/news/</a></li>
-	<li>WordPress Security releases <a href="https://wordpress.org/news/category/security/">https://wordpress.org/news/category/security/</a></li>
-	<li>WordPress Developer Resources <a href="https://developer.wordpress.org/">https://developer.wordpress.org/</a></li>
+	<li>Rilis-rilis Keamanan WordPress <a href="https://wordpress.org/news/category/security/">https://wordpress.org/news/category/security/</a></li>
+	<li>Sumberdaya Pengembang WordPress <a href="https://developer.wordpress.org/">https://developer.wordpress.org/</a></li>
 </ul>
 
 <hr />
@@ -320,7 +188,7 @@ WordPress stabil termutakhir.</p>
 
 <h3>Catatan Kaki</h3>
 <ul>
-	<li id='footnote1'><a href="#ref1">[1]</a> <a href="http://w3techs.com/">http://w3techs.com/</a>, as of March 2015</li>
+	<li id='footnote1'><a href="#ref1">[1]</a> <a href="http://w3techs.com/">http://w3techs.com/</a>, per Maret 2015</li>
 	<li id='footnote2'><a href="#ref2">[2]</a> <a href="https://make.wordpress.org/core/handbook/how-the-release-cycle-works/">https://make.wordpress.org/core/handbook/how-the-release-cycle-works/</a></li>
 	<li id='footnote3'><a href="#ref3">[3]</a> Andrew Nacin, WordPress lead developer, <a href="http://vip.wordpress.com/security">http://vip.wordpress.com/security</a></li>
 	<li id='footnote4'><a href="#ref4">[4]</a> <a href="https://wordpress.org/news/2014/08/wordpress-3-9-2/">https://wordpress.org/news/2014/08/wordpress-3-9-2/</a></li>
